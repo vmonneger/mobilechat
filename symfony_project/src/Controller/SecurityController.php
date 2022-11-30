@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Entity\User;
 use App\Service\CookieHelper;
 use App\Service\JWTHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -18,8 +17,8 @@ class SecurityController extends AbstractController
      */
     public function login(JWTHelper $helper, HubInterface $hub, CookieHelper $cookieHelper): Response
     {
-        /** @var $user User */
-        if ($user = $this->getUser()) {
+        $user = $this->getUser();
+        if ($user) {
 
             /*
              * Update est privé donc le destinataire doit avoir subscribe aux deux
@@ -57,7 +56,7 @@ class SecurityController extends AbstractController
 
         return $this->json([
             'message' => 'Bad credentials',
-            'Authorization' => 'Basic'
+            'current' => $this->getUser()
         ]);
     }
 
