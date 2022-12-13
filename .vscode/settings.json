@@ -1,0 +1,20 @@
+{
+  "workbench.colorCustomizations": {
+    "editorIndentGuide.activeBackground": "#6745c6"
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[react]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "prettier.configPath": "./frontend/.prettierrc.json",
+  "typescript.tsdk": "node_modules/typescript/lib"
+}
