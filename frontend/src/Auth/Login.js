@@ -1,4 +1,4 @@
-import {useLocation, useNavigate} from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import useGetJWT from '../Hook/useGetJWT'
 
@@ -23,6 +23,7 @@ export default function Login() {
     e.preventDefault()
     getJWT(username, password).then((jwt) => {
       if (jwt) {
+        console.log('redirection ca passe')
         navigate(from, { replace: true })
       } else {
         throw new Error("Token don't create")

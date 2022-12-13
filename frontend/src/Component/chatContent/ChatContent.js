@@ -1,11 +1,31 @@
 import React, { Component, useState, createRef, useEffect } from 'react'
+import { Route, Link, useParams, useLocation } from 'react-router-dom'
 
 import './chatContent.css'
 import ChatItem from './ChatItems'
 
-export default class ChatContent extends Component {
-  messagesEndRef = createRef(null)
-  chatItms = [
+export default function ChatContent() {
+  const [inputMessage, setInputMessage] = useState('')
+  let { userId } = useParams()
+
+  console.log(userId)
+
+  useEffect(() => {
+    const currentUser = JSON.parse(localStorage.getItem('user'))
+
+    fetch(`http://localhost:8245/chatroom/${userId}`, {
+      method: 'POST',
+      credentials: 'include',
+      mode: 'cors',
+      // headers: {
+      //   Authorization: `Basic ${credentials}`,
+      // },
+      body: JSON.stringify(currentUser.userid),
+    })
+  }, [userId])
+
+  // messagesEndRef = createRef(null)
+  const chatItms = [
     {
       key: 1,
       image: 'https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg',
@@ -50,86 +70,69 @@ export default class ChatContent extends Component {
     },
   ]
 
-  constructor(props) {
-    super(props)
-    this.state = {
-      chat: this.chatItms,
-      msg: '',
-    }
-  }
+  // const scrollToBottom = () => {
+  //   this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
+  // }
 
-  scrollToBottom = () => {
-    this.messagesEndRef.current.scrollIntoView({ behavior: 'smooth' })
-  }
+  // const componentDidMount = () => {
+  //   window.addEventListener('keydown', (e) => {
+  //     if (e.keyCode == 13) {
+  //       if (this.state.msg != '') {
+  //         this.chatItms.push({
+  //           key: 1,
+  //           type: '',
+  //           msg: this.state.msg,
+  //           image: 'https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg',
+  //         })
+  //         this.setState({ chat: [...this.chatItms] })
+  //         this.scrollToBottom()
+  //         this.setState({ msg: '' })
+  //       }
+  //     }
+  //   })
+  //   this.scrollToBottom()
+  // }
+  // onStateChange = (e) => {
+  //   this.setState({ msg: e.target.value })
+  // }
 
-  componentDidMount() {
-    window.addEventListener('keydown', (e) => {
-      if (e.keyCode == 13) {
-        if (this.state.msg != '') {
-          this.chatItms.push({
-            key: 1,
-            type: '',
-            msg: this.state.msg,
-            image: 'https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg',
-          })
-          this.setState({ chat: [...this.chatItms] })
-          this.scrollToBottom()
-          this.setState({ msg: '' })
-        }
-      }
-    })
-    this.scrollToBottom()
-  }
-  onStateChange = (e) => {
-    this.setState({ msg: e.target.value })
-  }
-
-  render() {
-    return (
-      <div className="main__chatcontent">
-        <div className="content__header">
-          <div className="blocks">
-            <div className="current-chatting-user">
-              <p>Tim Hover</p>
-            </div>
-          </div>
-
-          <div className="blocks">
-            <div className="settings">
-              <button className="btn-nobg">
-                <i className="fa fa-cog"></i>
-              </button>
-            </div>
+  return (
+    <div className="main__chatcontent">
+      <div className="content__header">
+        <div className="blocks">
+          <div className="current-chatting-user">
+            <p>Le user destinataire</p>
           </div>
         </div>
-        <div className="content__body">
-          <div className="chat__items">
-            {this.state.chat.map((itm, index) => {
-              return (
-                <ChatItem
-                  animationDelay={index + 2}
-                  key={itm.key}
-                  user={itm.type ? itm.type : 'me'}
-                  msg={itm.msg}
-                  image={itm.image}
-                />
-              )
-            })}
-            <div ref={this.messagesEndRef} />
-          </div>
-        </div>
-        <div className="content__footer">
-          <div className="sendNewMessage">
-            <button className="addFiles">
-              <i className="fa fa-plus"></i>
-            </button>
-            <input type="text" placeholder="Type a message here" onChange={this.onStateChange} value={this.state.msg} />
-            <button className="btnSendMsg" id="sendMsgBtn">
-              <i className="fa fa-paper-plane"></i>
+
+        <div className="blocks">
+          <div className="settings">
+            <button className="btn-nobg">
+              <i className="fa fa-cog"></i>
             </button>
           </div>
         </div>
       </div>
-    )
-  }
+      <div className="content__body">
+        <div className="chat__items">
+          {chatItms.map((itm, index) => {
+            return <ChatItem animationDelay={index + 2} key={itm.key} user={itm.type ? itm.type : 'me'} msg={itm.msg} />
+          })}
+        </div>
+      </div>
+      <div className="content__footer">
+        <div className="sendNewMessage">
+          <input
+            type="text"
+            placeholder="Ecris ton message ici"
+            onChange={(e) => setInputMessage(e.target.value)}
+            value={inputMessage}
+          />
+          <button className="btnSendMsg w-25" id="sendMsgBtn">
+            Envoyer
+          </button>
+        </div>
+      </div>
+    </div>
+  )
 }

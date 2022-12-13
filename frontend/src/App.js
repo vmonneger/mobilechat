@@ -23,7 +23,7 @@ function App() {
           <Route path="/login" element={<Login />} />
 
           <Route
-            path="/chatroom"
+            path="/chatroom/:userId"
             element={
               <NeedAuth>
                 <ChatBody />

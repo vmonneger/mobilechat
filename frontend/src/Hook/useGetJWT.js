@@ -1,6 +1,9 @@
 import { userContext } from '../Context/UserContext'
+import { useContext } from 'react'
+import jwt_decode from 'jwt-decode'
 
 export default function useGetJWT() {
+  const [loggedUser, setLoggedUser] = useContext(userContext)
   return function (username, password) {
     const credentials = btoa(`${username}:${password}`)
 
@@ -14,8 +17,14 @@ export default function useGetJWT() {
     })
       .then((response) => response.json())
       .then((data) => {
-        localStorage.setItem('token', data?.JWT ?? '')
-        return data?.JWT
+        const jwt = data?.JWT
+        if (jwt) {
+          localStorage.setItem('token', jwt ?? '')
+          const userInfo = jwt_decode(jwt)
+          localStorage.setItem('user', JSON.stringify(userInfo.mercure?.payload))
+        }
+        setLoggedUser(jwt)
+        return jwt
       })
   }
 }

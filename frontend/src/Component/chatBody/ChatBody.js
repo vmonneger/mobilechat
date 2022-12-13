@@ -6,7 +6,7 @@ import './chatBody.css'
 export default class chatBody extends Component {
   render() {
     return (
-      <div className="main__chatbody">
+      <div className="main__chatbody h-100">
         <ChatList />
         <ChatContent />
       </div>

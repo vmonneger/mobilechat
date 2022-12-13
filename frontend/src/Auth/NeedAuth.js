@@ -5,7 +5,6 @@ import { useContext } from 'react'
 export default function NeedAuth(props) {
   let location = useLocation()
   const [loggedUser, setLoggedUser] = useContext(userContext)
-  console.log('log', loggedUser)
 
   if (loggedUser) {
     return props.children

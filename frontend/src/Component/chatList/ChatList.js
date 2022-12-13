@@ -14,11 +14,11 @@ export default function ChatList() {
   const getUserList = useGetUserList()
   const backendPing = useBackendPing()
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-    const userId = e.target[0].value
-    backendPing(userId).then((data) => console.log(data))
-    navigate('chatroom')
+  const redirectionChatRoom = (userId) => {
+    // const userId = e.target[0].value
+    // backendPing(userId).then((data) => console.log(data))
+    console.log(userId)
+    navigate(`/chatroom/${userId}`)
   }
 
   const handleMessage = (e) => {
@@ -35,7 +35,7 @@ export default function ChatList() {
   useEffect(() => {
     getUserList().then((data) => setUserList(data.users))
     console.log('user list', userList)
-    console.log('ok')
+
     const url = new URL('http://localhost:9090/.well-known/mercure')
     url.searchParams.append('topic', 'https://example.com/my-private-topic')
 
@@ -46,6 +46,10 @@ export default function ChatList() {
       eventSource.close()
     }
   }, [])
+
+  const test = (e) => {
+    console.log(e)
+  }
 
   return (
     <div className="main__chatlist">
@@ -78,6 +82,9 @@ export default function ChatList() {
               // active={user.active ? "active" : ""}
               // isOnline={user.isOnline ? "active" : ""}
               image="https://cdn.pixabay.com/photo/2021/07/25/08/03/account-6491185_1280.png"
+              // isClick={handleSubmit(user.id)}
+              redirectionChatRoom={redirectionChatRoom}
+              userId={user.id}
             />
           )
         })}

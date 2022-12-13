@@ -6,10 +6,19 @@ export default class ChatListItems extends Component {
     super(props)
   }
   selectChat = (e) => {
+    // this.props.isClick(true)
     for (let index = 0; index < e.currentTarget.parentNode.children.length; index++) {
       e.currentTarget.parentNode.children[index].classList.remove('active')
     }
     e.currentTarget.classList.add('active')
+    // this.props.isClick(false)
+    this.props.redirectionChatRoom(this.props.userId)
+  }
+
+  handleOnClick = () => {
+    this.selectChat()
+    console.log('ljdp')
+    // this.props.redirectionChatRoom(this.props.key)
   }
 
   render() {
